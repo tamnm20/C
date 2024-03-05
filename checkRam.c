@@ -5,7 +5,7 @@
 
 // Khai báo biến
 int user = 0;
-int system = 0;
+int system1 = 0;
 int idle = 0;
 
 char* floatToString(double input_num) {
@@ -33,15 +33,15 @@ int main() {
             int x, y, z;
             sscanf(out, "%*s %d %*s %*s %d %*s %d", &x, &y, &z);
 
-            printf("Old: %d\t%d\t%d\n", user, system, idle);
+            printf("Old: %d\t%d\t%d\n", user, system1, idle);
 
             user = x - user;
-            system = y - system;
+            system1 = y - system1;
             idle = z - idle;
-            double avg = ((double)(user + system) * 100) / (user + system + idle);
+            double avg = ((double)(user + system1) * 100) / (user + system1 + idle);
 
             printf("New: %d\t%d\t%d\n", x, y, z);
-            printf("Sub: %d\t%d\t%d\n", user, system, idle);
+            printf("Sub: %d\t%d\t%d\n", user, system1, idle);
             printf("Persen: %f\n\n", avg);
 
             char* payload = floatToString(avg);
@@ -50,7 +50,7 @@ int main() {
             free(payload);
 
             user = x;
-            system = y;
+            system1 = y;
             idle = z;
         }
 
