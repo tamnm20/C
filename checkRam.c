@@ -1,62 +1,19 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-// Khai báo biến
-int user = 0;
-int system1 = 0;
-int idle = 0;
-
-char* floatToString(double input_num) {
-    // Chuyển đổi số kiểu double thành chuỗi
-    char* str = (char*)malloc(16);
-    snprintf(str, 16, "%.3f", input_num);
-    return str;
-}
-
-void sleep_ms(int ms) {
-    usleep(ms * 1000); // Chuyển đổi mili giây sang micro giây
-}
+#include <sys/sysinfo.h>
 
 int main() {
-    while (1) {
-        sleep_ms(2000);
-        FILE* fp = popen("cat /proc/stat | grep 'cpu '", "r");
-        if (fp == NULL) {
-            perror("Error executing command");
-            exit(EXIT_FAILURE);
-        }
+    struct sysinfo sys_info;
 
-        char out[128];
-        if (fgets(out, sizeof(out), fp) != NULL) {
-            int x, y, z;
-            sscanf(out, "%*s %d %*s %*s %d %*s %d", &x, &y, &z);
-
-            printf("Old: %d\t%d\t%d\n", user, system1, idle);
-
-            user = x - user;
-            system1 = y - system1;
-            idle = z - idle;
-            double avg = ((double)(user + system1) * 100) / (user + system1 + idle);
-
-            printf("New: %d\t%d\t%d\n", x, y, z);
-            printf("Sub: %d\t%d\t%d\n", user, system1, idle);
-            printf("Persen: %f\n\n", avg);
-
-            char* payload = floatToString(avg);
-            printf("%s\n", payload);
-
-            free(payload);
-
-            user = x;
-            system1 = y;
-            idle = z;
-        }
-
-        pclose(fp);
+    // Lấy thông tin hệ thống
+    if (sysinfo(&sys_info) != 0) {
+        perror("sysinfo");
+        return 1;
     }
+
+    // In thông tin về RAM
+    printf("Total RAM: %ld MB\n", sys_info.totalram / (1024 * 1024));
+    printf("Free RAM : %ld MB\n", sys_info.freeram / (1024 * 1024));
+    printf("Used RAM : %ld MB\n", (sys_info.totalram - sys_info.freeram) / (1024 * 1024));
 
     return 0;
 }
-
