@@ -3,9 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
-// Hàm lấy thông tin CPU
 double get_cpu_usage() {
-    FILE* fp = popen("mpstat 1 1 | awk '$12 ~ /[0-9.]+/ { print 100 - $12 }'", "r");
+    FILE* fp = popen("top -bn1 | awk '/%Cpu/ {print $2 + $4}'", "r");
     if (fp == NULL) {
         perror("Error executing command");
         exit(EXIT_FAILURE);
@@ -27,4 +26,3 @@ int main() {
 
     return 0;
 }
-
