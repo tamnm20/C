@@ -24,11 +24,11 @@ Nếu SSH đã được bật, bạn sẽ thấy một thông báo về trạng 
 
 ### 4. (Tùy chọn) Cấu hình để tự động khởi động SSH khi hệ thống khởi động:
 
-`sudo service ssh enable`
+Sử dụng lệnh raspi-config:
 
-Lệnh trên sẽ đặt SSH làm dịch vụ tự động khởi động khi Raspberry Pi khởi động.
+`sudo raspi-config
 
-Bây giờ, bạn đã bật dịch vụ SSH trên Raspberry Pi, và bạn có thể sử dụng một client SSH để kết nối đến nó từ một máy tính khác trong mạng local.
+Sau đó, chọn "Interfacing Options" > "SSH" và chọn "Yes" để kích hoạt SSH. Reboot lại bằng `sudo Reboot` khi này Pi sẽ tự động bật SSH.
 
 ## Cấu hình trên VM Box
 
