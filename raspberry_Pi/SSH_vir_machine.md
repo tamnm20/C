@@ -26,7 +26,7 @@ Nếu SSH đã được bật, bạn sẽ thấy một thông báo về trạng 
 
 Sử dụng lệnh raspi-config:
 
-`sudo raspi-config
+`sudo raspi-config`
 
 Sau đó, chọn "Interfacing Options" > "SSH" và chọn "Yes" để kích hoạt SSH. Reboot lại bằng `sudo Reboot` khi này Pi sẽ tự động bật SSH.
 
