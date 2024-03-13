@@ -69,8 +69,21 @@ Vào Plugins > NppExec > Advanced Options.
 Tiếp theo vào Setting > Shortcut Mapper, chọn tab Plugin Commands.
 
 Tìm đến compiler của bạn nhấn đúp hoặc chọn nó rồi click Modify.
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 ![alt](Shortcut_mapper_NPP.png)
 
+<<<<<<< HEAD
 
+=======
+=======
+![alt](Shortcut mapper NPP.png)
+>>>>>>> tam
+=======
+
+![alt](Shortcut_mapper_NPP.png)
+
+>>>>>>> main
+>>>>>>> origin/main
 Chọn phím tắt theo thói quen và sở thích rồi click OK.
