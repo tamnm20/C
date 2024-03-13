@@ -72,4 +72,5 @@ Tìm đến compiler của bạn nhấn đúp hoặc chọn nó rồi click Modi
 
 ![alt](Shortcut_mapper_NPP.png)
 
+
 Chọn phím tắt theo thói quen và sở thích rồi click OK.
