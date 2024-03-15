@@ -64,7 +64,43 @@ bool Search( const node_t* root, int value )
     }
 }
 
-void PreOrder(node_t* root){
+int LeftMostValue( const node_t* root )
+{
+    while ( root->left != NULL )
+        root = root->left;
+    return root->data;
+}
+
+node_t* Delete( node_t* root, int value )
+{
+    if ( root == NULL )
+        return root;
+    if ( LeftOf( value, root ) )
+        root->left = Delete( root->left, value );
+    else if ( RightOf( value, root ) )
+        root->right = Delete( root->right, value );
+    else
+    {
+        // root->data == value, delete this node
+        if ( root->left == NULL )
+        {
+            node_t* newRoot = root->right;
+            free( root );
+            return newRoot;
+        }
+        if ( root->right == NULL )
+        {
+            node_t* newRoot = root->left;
+            free( root );
+            return newRoot;
+        }
+        root->data = LeftMostValue( root->right );
+        root->right = Delete( root->right, root->data );
+    }
+    return root;
+}
+
+void PreOrder(node_t* root){//Node -> Left -> Right
     if(root != NULL)
     {
         printf("%d ", root->data); //Ghé thăm Node root
@@ -73,7 +109,7 @@ void PreOrder(node_t* root){
     }
 }
 
-void InOrder(node_t* root){
+void InOrder(node_t* root){//Left -> Node -> Right
     if(root != NULL)
     {
         InOrder(root->left);	//Gọi đệ quy duyệt qua cây con bên trái
@@ -82,7 +118,7 @@ void InOrder(node_t* root){
     }
 }
 
-void PostOrder(node_t* root){
+void PostOrder(node_t* root){//Left -> Right -> Node
     if(root != NULL)
     {
         PostOrder(root->left);
@@ -91,8 +127,48 @@ void PostOrder(node_t* root){
     }
 }
 
+void NRL(node_t* root){//Node-> Right -> Left 
+    if(root != NULL)
+    {
+        printf("%d ", root->data); //Ghé thăm Node root
+		PreOrder(root->right);	//Gọi đệ quy duyệt qua cây con bên phải
+        PreOrder(root->left);	//Gọi đệ quy duyệt qua cây con bên trái
+    }
+}
+
+void RNL(node_t* root){//Right->  Node-> Left 
+    if(root != NULL)
+    {
+		PreOrder(root->right);	//Gọi đệ quy duyệt qua cây con bên phải
+		printf("%d ", root->data); //Ghé thăm Node root
+        PreOrder(root->left);	//Gọi đệ quy duyệt qua cây con bên trái
+    }
+}
+
+void RLN(node_t* root){//Right-> Left ->  Node
+    if(root != NULL)
+    {
+		PreOrder(root->right);	//Gọi đệ quy duyệt qua cây con bên phải
+        PreOrder(root->left);	//Gọi đệ quy duyệt qua cây con bên trái
+		printf("%d ", root->data); //Ghé thăm Node root
+    }
+}
+
 int main() {
+	
+	/*	
+			   25
+			/	   \
+		   /  		\
+		 15    		 50
+		/  \   		/ 	\
+	   10   22 	  35    70
+	  / \  / \    / \	/ \
+     4  12 18 24 31 44 66 90
+	 */
+
 	node_t* root = NULL; //Node gốc
+
 	root = Insert( root, 25 );
     root = Insert( root, 15 );
     root = Insert( root, 50 );
@@ -116,6 +192,13 @@ int main() {
     printf("\nDuyet postorder: ");
     PostOrder(root);
 	
+	printf("\nNRL: ");
+    NRL(root);
+	printf("\nRNL: ");
+    RNL(root);
+	printf("\nRLN: ");
+    RLN(root);
+	
 	printf("\n==Thu them phan tu 9, 2 vao BTS==\n");
     Insert(root, 9);
 	Insert(root, 2);
@@ -131,8 +214,17 @@ int main() {
 	else printf("no\n");
 	
 	printf("\nTim kiem phan tu 100: ");
-	if(Search(root, 31)) printf("yes\n");
+	if(Search(root, 100)) printf("yes\n");
 	else printf("no\n");
+	
+	printf("\n==Thu xoa phan tu 50 khoi BTS==\n");
+    Delete(root, 15);
+    printf("\nDuyet preorder : ");
+    PreOrder(root);
+    printf("\nDuyet inorder  : ");
+    InOrder(root);
+    printf("\nDuyet postorder: ");
+    PostOrder(root);
 	
 	Free( root );
     root = NULL;

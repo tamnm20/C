@@ -54,24 +54,57 @@ Cây tìm kiếm nhị phân là một cấu trúc dữ liệu hiệu quả cho 
 Nó được gọi là cây nhị phân vì mỗi Node của cây chỉ có tối đa hai con
 Nó được gọi là cây tìm kiếm nhị phân vì nó có thể được sử dụng để tìm kiếm sự hiện diện của một phần tử trong thời gian O(log (n)).
 
-2. Tìm kiếm trên BST
-Việc tìm kiếm cũng tương tự như việc thêm phần tử vào BST. Ta có quy trình như sau:
+### 1. Xóa Node trong BST
 
-Nếu Node hiện tại có giá trị = giá trị cần tìm, trả về true và kết thúc.
-Nếu Node hiện tại có giá trị > giá trị cần tìm, gọi đệ quy tìm ở cây con bên trái.
-Nếu Node hiện tại có giá trị < giá trị cần tìm, gọi đệ quy tìm ở cây con bên phải
-Nếu tìm đến hết cây(Node đó = NULL) mà không xảy ra (1), trả về false và kết thúc.
-
-2.1 Lấy giá trị con trái nhất
+1. Lấy giá trị con trái nhất
 Rất đơi giản, duyệt theo con trỏ trỏ đến cây con bên trái tới chừng nào không còn con bên trái nữa thì đó là con trái nhất rồi.
 
 Hàm này sẽ được chúng ta sử dụng trong việc xóa một Node có giá trị chỉ định trên BST ở mục tiếp theo
 
-3. Duyệt cây tìm kiếm nhị phân
+Việc xóa Node trong BST có lẽ là phức tạp nhất trong các chức năng của cây tìm kiếm nhị phân. Nếu Node bạn cần xóa là Node lá thì việc xóa rất đơn giản. Cái khó ở chỗ xóa một Node ở trung gian, khi đó, bạn phải tìm cách xóa và nối lại mà vẫn đảm bảo cây mới vẫn là BST. Chúng ta sẽ xem xét từng trường hợp trước khi code nhé:
+
+2. Node cần xóa là Node lá(không có child nào cả)
+Giả sử ta cần xóa 20 trong hình dưới đây, đơn giản là chỉ cần giải phóng ô nhớ đó.
+
+              50                            50
+           /              delete(20)      /   
+          30      70       --------->    30     70 
+         /      /                           /   
+       20   40  60   80                   40  60   80
+3. Node cần xóa có 1 child
+Trong trường hợp này, Node bị xóa sẽ được giải phóng và cây con duy nhất của Node bị xóa sẽ được liên kết trực tiếp với cha của Node bị xóa.
+
+              50                            50
+           /              delete(30)      /   
+          30      70       --------->    40     70 
+                /                            /   
+            40  60   80                       60   80
+4. Node cần xóa có đủ 2 child
+- Xóa node có 2 con trong BST
+- Giả sử cần xóa Node khoanh đỏ. Khi đó, ta cần tìm Node thế thân cho Node đỏ này, đó là Node LeftMostChild của cây con bên phải của Node đỏ(72) = Node khoanh màu xanh(54) . Sau đó, gọi đệ quy Xóa Node màu xanh. Khi đó Node cần xóa sẽ quay trở về trường hợp 1 hoặc 2(Trong ảnh này là trường hợp 2 – có 1 child).
+- Đây là trường hợp nan giải nhất, nhưng chúng ta vẫn có cách làm như sau:
+- 
+- Tìm Node của con trái nhất(giả sử nó là leftmost) của cây con bên phải của Node cần xóa.
+- Cập nhật giá trị của Node cần xóa = giá trị của Node leftmost.
+- Gọi đệ quy hàm Delete xóa Node leftmost khỏi BST.
+- Giải thích:
+
+Khi muốn xóa Node có 2 con, ta cần tìm Node nào đó trong BST thỏa mãn tính chất lớn hơn lớn hơn tất cả các con bên trái và nhỏ hơn tất cả các con bên phái -> Node đó chính là LeftMostChild của con bên phải của Node cần xóa.
+Ta chỉ cần sửa giá trị của Node cần xóa, không cần xóa Node đó làm gì. Thay vào đó, xóa Node bị thế thân(LeftMostChild của con bên phải của Node cần xóa).
+
+### 2. Tìm kiếm trên BST
+Việc tìm kiếm cũng tương tự như việc thêm phần tử vào BST. Ta có quy trình như sau:
+
+- Nếu Node hiện tại có giá trị = giá trị cần tìm, trả về true và kết thúc.
+- Nếu Node hiện tại có giá trị > giá trị cần tìm, gọi đệ quy tìm ở cây con bên trái.
+- Nếu Node hiện tại có giá trị < giá trị cần tìm, gọi đệ quy tìm ở cây con bên phải
+- Nếu tìm đến hết cây(Node đó = NULL) mà không xảy ra (1), trả về false và kết thúc.
+
+Duyệt cây tìm kiếm nhị phân
 
 Ở mục này mình sẽ trình bày về 3 cách duyệt cây tìm kiếm nhị phân. Chúng ta sẽ đi vào chi tiết từng cách nhé. Thứ tự duyệt được đặt tên phụ thuộc vào vị trí của Node root trong quá trình duyệt:
 
-PreOrder: Node -> Left -> Right
-InOrder: Left -> Node -> Right
-PostOrder: Left -> Right -> Node
-Thực ra 3 phần tử Left, Right, Node có tất cả 6 hoán vị cơ. Còn 3 cái nữa các bạn tự cài nhé.
+- PreOrder: Node -> Left -> Right
+- InOrder: Left -> Node -> Right
+- PostOrder: Left -> Right -> Node
+- Thực ra 3 phần tử Left, Right, Node có tất cả 6 hoán vị cơ. Còn 3 cái nữa các bạn tự cài nhé.
