@@ -8,6 +8,29 @@ Link tải: https://sourceforge.net/projects/mingw/
 
 Chọn đường dẫn lưu folder cài đặt, nên sử dụng C:\MinGW
 
+✅ CÁC GÓI CẦN CÀI:
+Trong tab Basic Setup, hãy tick chọn ít nhất các mục sau:
+
+✅ mingw32-base
+
+Đây là gói bắt buộc, chứa trình biên dịch gcc (cho C), g++ (cho C++), và các công cụ cơ bản khác.
+
+✅ mingw32-gcc-g++
+
+Bao gồm cả trình biên dịch C++ (g++). Nhiều IDE cần gói này kể cả khi bạn chỉ viết C.
+
+⚙️ CÁCH CÀI:
+
+Tick chọn các ô như hình:
+
+mingw32-base
+
+mingw32-gcc-g++
+
+Vào menu Installation → Apply Changes
+
+Bấm Apply để MinGW tự động tải và cài đặt các gói đã chọn.
+
 ## Bước 3: Thêm Environment Variables cho MinGW
 
 Mở Windown Search tìm kiếm `Edit the system environment variables` nhấn enter
@@ -16,7 +39,7 @@ Trong hộp User variables for ... --> Chọn Path (nếu chưa có thi tạo m�
 
 Thêm 1 dòng: `C:\MinGW\bin` --> OK để thoát việc tạo môi trường.
 
-Mở Command Promt lên (Win + R) gõ cmd Enter, trong bảng Command gõ gcc – -version ENTER
+Mở Command Promt lên (Win + R) gõ cmd Enter, trong bảng Command gõ gcc –-version ENTER
 
 ## Bước 4: Cài MinGW vào Notepad++
 
